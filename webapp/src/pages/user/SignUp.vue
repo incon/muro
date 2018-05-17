@@ -2,22 +2,22 @@
  <div id="access">
    <mnav id="mnav"></mnav>
    <div id="content">
-        <div id="title">    
+        <div id="title">
             <router-link to="/a/access">Sign In &emsp;|&emsp;</router-link>
-            <router-link to="/a/signup">Sign Up</router-link> 
-        </div> 
+            <router-link to="/a/signup">Sign Up</router-link>
+        </div>
           <input type="text" name="username" placeholder="Username" v-model="Username"  required />
           <input type="text" name="email" placeholder="E-mail" v-model="Email"  required />
           <input type="password" name="password" placeholder="Password" v-model="Password"  required/>
           <input type="password" name="confirm_password" placeholder="Confirm password" v-model="ConfirmPassword"  required/><br/>
-          
+
           <input type="checkbox" id="tos" name="tos" v-model="tos_checked"/>
           <label for="tos">Accept the <router-link to="">Terms of Service</router-link></label><br/>
           <input type="checkbox" id="news" name="news" v-model="news_checked"/>
           <label for="news">Subscribe to our newsletter!</label><br/>
 
           <button id="submit" @click="signup">Sign up</button>
-        
+
     </div>
   </div>
 </template>
@@ -44,7 +44,7 @@ export default {
       var email = this.Email
       var password = this.Password
       var confirm_password = this.ConfirmPassword
-      axios.post('http://localhost:8000/user/signup', {
+      axios.post('http://muro.lxd:8000/user/signup', {
           username: username,
           email: email,
           password: password,
@@ -52,13 +52,13 @@ export default {
       })
       .then(response => {
         // console.log(response.data)
-        window.location.reload ( true )
+        // window.location.reload ( true )
         this.$router.push('/a/access')
       })
       .catch(e => {
         console.log(e)
       })
-      
+
     }
   }
 }
@@ -105,7 +105,7 @@ input[type="checkbox"] {
 }
 dialog {
   top: 50%;
-  width: 80%;  
+  width: 80%;
   border: 5px solid rgba(0, 0, 0, 0.3);
 }
 dialog::backdrop{

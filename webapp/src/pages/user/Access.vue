@@ -2,16 +2,16 @@
   <div id="access">
       <mnav id="mnav"></mnav>
       <div id="content">
-          <div id="title">    
+          <div id="title">
             <router-link to="/a/access">Sign In &emsp;|&emsp;</router-link>
-            <router-link to="/a/signup">Sign Up</router-link> 
+            <router-link to="/a/signup">Sign Up</router-link>
           </div>
             <input type="text" name="username" placeholder="Username" v-model="Username" />
             <input type="password" name="password" placeholder="Password" v-model="Password" /><br/>
           <div id="add">
             <label class="checkbox">
             <input type="checkbox" name="remember" value="1" id="checks" checked="true"/>
-            <span class="check" for="checks"></span> 
+            <span class="check" for="checks"></span>
           </label>Remember
           <span> &emsp;&emsp;<router-link to="/settings/missing_pwd" style="text-decoration-line: none;">Forgot Password?</router-link></span><br/>
           </div>
@@ -43,7 +43,7 @@ export default {
       var username = this.Username
       var password = this.Password
 
-      axios.post('http://localhost:8000/user/signin', {
+      axios.post('http://muro.lxd:8000/user/signin', {
           username: username,
           password: password
       })
@@ -52,7 +52,7 @@ export default {
         sessionStorage.setItem('signin_user',JSON.stringify(response.data.signin_user));
         console.log(response.data.token);
         console.log(JSON.parse(sessionStorage.getItem('signin_user')).usernmae)
-        window.location.reload ( true ); 
+        // window.location.reload ( true );
         this.$router.push('/')
       })
       .catch((e) => {

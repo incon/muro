@@ -4,10 +4,10 @@
         <div id="body">
             <div id="theme">
                 <div id="title">
-                    <h2> {{ theme.title }} </h2> 
-                    <span id="info"> {{ theme.category }}</span> • 
-                    <span id="info"><a :href="'/a/user/' + theme.user_id">{{ theme_user.username }}</a></span> •   
-                    <span id="info">{{ theme_rtime }}</span>  
+                    <h2> {{ theme.title }} </h2>
+                    <span id="info"> {{ theme.category }}</span> •
+                    <span id="info"><a :href="'/a/user/' + theme.user_id">{{ theme_user.username }}</a></span> •
+                    <span id="info">{{ theme_rtime }}</span>
                 </div>
                 <div id="content" v-html="theme.content" ></div>
             </div>
@@ -27,14 +27,14 @@
             <hr>
             <div id="reply" v-if="signin_user">
                 <div id="write"> Write comment in markdwon! </div>
-                <textarea name="comment" v-model="Textarea" placeholder="if you want @somebody for send a message in your comment, the rule is: 
+                <textarea name="comment" v-model="Textarea" placeholder="if you want @somebody for send a message in your comment, the rule is:
                 1: the @ symbol can't be first position at line.(like: @somebodyxxxxx)
                 2: one position before the @ symbol can't be space(like: xxxxx @somebodyxxxxx)."></textarea><br>
                 <button id="submit" @click="comment">Comment</button>
-            </div>  
+            </div>
             <div v-else style="margin: 10px;">Please login first and make a Comment.
                 <a href="/a/access" style="background-color:aqua;">Login</a>
-            </div>    
+            </div>
         </div>
     </div>
 </template>
@@ -60,7 +60,7 @@ export default {
         if (sessionStorage.getItem('signin_user')){
             this.signin_user = JSON.parse(sessionStorage.getItem('signin_user'))
         }
-        axios.get("http://localhost:8000/api/" + this.$route.params.id)
+        axios.get("http://muro.lxd:8000/api/" + this.$route.params.id)
         .then((response) => {
             this.theme = response.data.theme
             this.theme_user = response.data.theme_user
@@ -78,7 +78,7 @@ export default {
       let comment = this.Textarea
       let theme_id = this.$route.params.id
       let user_id = JSON.parse(sessionStorage.getItem('signin_user')).id
-      axios.post("http://localhost:8000/api/" + this.$route.params.id, {
+      axios.post("http://muro.lxd:8000/api/" + this.$route.params.id, {
           the_theme_id: theme_id,
           user_id: user_id,
           comment: comment
@@ -107,7 +107,7 @@ a {
     padding: 10px;
     border-bottom: 1px solid rgb(223, 223, 223);
 }
-#body #theme > #title h2 { 
+#body #theme > #title h2 {
     padding-bottom: 0.3rem;
 }
 #body #theme > #title #info {
@@ -147,11 +147,11 @@ hr {
     margin-bottom: 10px;
 }
 #reply textarea {
-    width:100%; 
+    width:100%;
     height: 200px;
 }
 #body #reply button {
-    width:66px; 
+    width:66px;
     line-height:25px;
     background-color:#ffffff;
     border :1px solid #a39c9c;

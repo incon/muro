@@ -20,7 +20,9 @@ extern crate timeago;
 extern crate pulldown_cmark;
 
 use actix::*;
-use actix_web::{server, App, http::{header, Method}, fs, middleware, middleware::cors::Cors};
+use actix_web::{server, App, fs, middleware};
+use actix_web::middleware::cors::Cors;
+use actix_web::http::{header, Method};
 use diesel::prelude::PgConnection;
 use diesel::r2d2::{ Pool, ConnectionManager };
 
@@ -62,13 +64,13 @@ fn main() {
             .resource("/api/user_update", |r| { r.method(Method::POST).with2(user_update); })
             .resource("/api/theme_list", |r| { r.method(Method::GET).h(theme_list); })
             .resource("/api/theme_new", |r| { r.method(Method::POST).with2(theme_new); })
-            .resource("/api/{theme_id}", |r| { 
-                r.method(Method::GET).h(theme_and_comments); 
-                r.method(Method::POST).with2(theme_add_comment); 
+            .resource("/api/{theme_id}", |r| {
+                r.method(Method::GET).h(theme_and_comments);
+                r.method(Method::POST).with2(theme_add_comment);
             })
             .register())
             .handler("/", fs::StaticFiles::new("public")))
-        .bind("127.0.0.1:8000").unwrap()
+        .bind("0.0.0.0:8000").unwrap()
         .shutdown_timeout(2)
         .start();
 

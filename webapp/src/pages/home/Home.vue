@@ -20,7 +20,7 @@
                       <span id="info">View</span>
                       <span id="info">Reply</span>
                       <span>Activity</span>
-                  </span>      
+                  </span>
             </div>
             <div id="content">
                   <div id="items" v-for="(theme, index) in theme_list" :key="index">
@@ -32,7 +32,7 @@
                               <span id="info"> {{ theme.view_count }} </span>
                               <span id="info"> {{ theme.comment_count }} </span>
                               <span > {{ theme.rtime }} </span>
-                          </span>                        
+                          </span>
                       </div>
                   </div>
                   <div id="items" v-for="(theme, index) in theme_list">
@@ -68,13 +68,13 @@ export default {
     }
   },
   mounted: function() {
-    axios.get('http://localhost:8000/api/theme_list', auth.getAuthHeader())
+    axios.get('http://muro.lxd:8000/api/theme_list', auth.getAuthHeader())
       .then((response) => {
         this.theme_list = response.data.theme_list.reverse()
         // this.theme_list = response.data.theme_list
         console.log(response.data.theme_list)
-        console.log(sessionStorage.getItem('token'))
-        console.log(JSON.parse(sessionStorage.getItem('signin_user')).username)
+        //console.log(sessionStorage.getItem('token'))
+        //console.log(JSON.parse(sessionStorage.getItem('signin_user')).username)
       })
       .catch((e) => {
         console.log(e)

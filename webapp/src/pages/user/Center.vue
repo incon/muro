@@ -22,7 +22,7 @@
                 <button id="submit" v-if="username != ''" @click="deleteme">Delete Account</button><br/>
 
                 <div id="update" v-if="userupdate == true">
-                  <p>Account Update</p> 
+                  <p>Account Update</p>
                     <input type="text" name="newname" placeholder="Newname" v-model="Newname"  required /><br/>
                     <input type="text" name="newmail" placeholder="Newmail" v-model="Newmail"  required /><br/>
                     <input type="password" name="newpassword" placeholder="Newpassword" v-model="Newpassword"  required/><br/>
@@ -36,10 +36,10 @@
                 <p>My Message</p>
             </div>
         </div>
-        
-        
 
-        
+
+
+
       </div>
     </div>
 </template>
@@ -67,7 +67,7 @@ export default {
   },
   mounted: function() {
       if (sessionStorage.getItem('token')){
-        axios.get('http://localhost:8000/api/user_info', auth.getAuthHeader())
+        axios.get('http://muro.lxd:8000/api/user_info', auth.getAuthHeader())
         .then((response) => {
             this.email =  response.data.current_user.email
             this.username =  response.data.current_user.username
@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     login() {
-        window.location.reload ( true ); 
+        window.location.reload ( true );
         this.$router.push('/a/access')
     },
     update() {
@@ -94,7 +94,7 @@ export default {
         var newmail = this.Newmail
         var newpassword = this.Newpassword
         var confirm_newpassword = this.ConfirmNewpassword
-        axios.post('http://localhost:8000/api/user_update', {
+        axios.post('http://muro.lxd:8000/api/user_update', {
             user_id: user_id,
             newname: newname,
             newmail: newmail,
@@ -110,17 +110,17 @@ export default {
         })
     },
     deleteme() {
-        axios.get('http://localhost:8000/api/user_delete', auth.getAuthHeader())
+        axios.get('http://muro.lxd:8000/api/user_delete', auth.getAuthHeader())
         .then((response) => {
             sessionStorage.removeItem('token')
             sessionStorage.removeItem('signin_user')
-            window.location.reload ( true ); 
+            window.location.reload ( true );
             this.$router.push('/')
         })
         .catch((e) => {
           console.log(e)
         })
-        
+
     }
   }
 }
@@ -135,7 +135,7 @@ export default {
     background-color: #faeaf5;
 }
 button {
-    width: 7rem; 
+    width: 7rem;
     line-height:25px;
     background-color:#ffffff;
     border :1px solid #a39c9c;

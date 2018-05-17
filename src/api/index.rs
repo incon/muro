@@ -1,5 +1,6 @@
 use actix::*;
-use actix_web::{fs::NamedFile, HttpRequest, Result};
+use actix_web::{HttpRequest, Result};
+use actix_web::fs::NamedFile;
 use std::path::Path;
 use model::db::ConnDsl;
 
