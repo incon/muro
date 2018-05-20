@@ -4,12 +4,12 @@ use api::index::AppState;
 use model::user::{SignupUser, SigninUser};
 
 pub fn signup(signup_user: Json<SignupUser>, state: State<AppState>) -> FutureResponse<HttpResponse> {
-    state.db.send(SignupUser{ 
+    state.db.send(SignupUser{
             username: signup_user.username.clone(),
             email: signup_user.email.clone(),
             password: signup_user.password.clone(),
-            confirm_password: signup_user.confirm_password.clone(),
-        })         
+            //confirm_password: signup_user.confirm_password.clone(),
+        })
         .from_err()
         .and_then(|res| {
             match res {
@@ -20,10 +20,10 @@ pub fn signup(signup_user: Json<SignupUser>, state: State<AppState>) -> FutureRe
 }
 
 pub fn signin(signin_user: Json<SigninUser>, state: State<AppState>) -> FutureResponse<HttpResponse> {
-    state.db.send(SigninUser{ 
+    state.db.send(SigninUser{
             username: signin_user.username.clone(),
             password: signin_user.password.clone(),
-        })         
+        })
         .from_err()
         .and_then(|res| {
             match res {

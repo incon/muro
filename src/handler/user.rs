@@ -15,30 +15,30 @@ impl Handler<SignupUser> for ConnDsl {
     type Result = Result<Msgs, Error>;
 
     fn handle(&mut self, signup_user: SignupUser, _: &mut Self::Context) -> Self::Result {
-        if &signup_user.password == &signup_user.confirm_password {
-                use utils::schema::users::dsl::*;
-                let hash_password = match hash(&signup_user.password, DEFAULT_COST) {
-                    Ok(h) => h,
-                    Err(_) => panic!()
-                };
-                let new_user = NewUser {
-                    email: &signup_user.email,
-                    username: &signup_user.username,
-                    password: &hash_password,
-                    created_at: Utc::now().naive_utc(),
-                };
-                let conn = &self.0.get().map_err(error::ErrorInternalServerError)?;
-                diesel::insert_into(users).values(&new_user).execute(conn).map_err(error::ErrorInternalServerError)?;
-                Ok(Msgs { 
-                        status: 200,
-                        message : "Successful Signup.".to_string(),
-                })
-        }else{
-            Ok(Msgs { 
+
+        use utils::schema::users::dsl::*;
+        let hash_password = match hash(&signup_user.password, DEFAULT_COST) {
+            Ok(h) => h,
+            Err(_) => panic!()
+        };
+        let new_user = NewUser {
+            email: &signup_user.email,
+            username: &signup_user.username,
+            password: &hash_password,
+            created_at: Utc::now().naive_utc(),
+        };
+        let conn = &self.0.get().map_err(error::ErrorInternalServerError)?;
+        diesel::insert_into(users).values(&new_user).execute(conn).map_err(error::ErrorInternalServerError)?;
+        Ok(Msgs {
+                status: 200,
+                message : "Successful Signup.".to_string(),
+        })
+        /*}else{
+            Ok(Msgs {
                     status: 400,
                     message : "failed Signup.".to_string(),
             })
-        }
+        }*/
     }
 }
 
@@ -48,7 +48,10 @@ impl Handler<SigninUser> for ConnDsl {
     fn handle(&mut self, signin_user: SigninUser, _: &mut Self::Context) -> Self::Result {
         use utils::schema::users::dsl::*;
         let conn = &self.0.get().map_err(error::ErrorInternalServerError)?;
-        let login_user =  users.filter(&username.eq(&signin_user.username)).load::<User>(conn).map_err(error::ErrorInternalServerError)?.pop();
+        let login_user =  users.filter(&username.eq(&signin_user.username))
+            .load::<User>(conn)
+            .map_err(error::ErrorInternalServerError)?.pop();
+        println!("{:?} {:?}", login_user, signin_user);
         let no_user = User {
             id: 0,
             email: "".to_owned(),
@@ -58,6 +61,10 @@ impl Handler<SigninUser> for ConnDsl {
         };
         match login_user {
             Some(login_user) => {
+                //let login_pass = users.filter(&id.eq(&login_user.id))
+                //    .load::<String>(conn)
+                //    .map_err(error::ErrorInternalServerError)?.pop();
+
                 match verify(&signin_user.password, &login_user.password) {
                     Ok(valid) => {
                         let user_id = login_user.id.to_string();
@@ -66,10 +73,10 @@ impl Handler<SigninUser> for ConnDsl {
                             id: login_user.id,
                             email: login_user.email.clone(),
                             username: login_user.username.clone(),
-                            password: login_user.password.clone(),
+                            password: "".to_owned(),
                             created_at : login_user.created_at.clone(),
                         };
-                        Ok(SigninMsgs { 
+                        Ok(SigninMsgs {
                             status: 200,
                             token: token,
                             signin_user: the_user,
@@ -77,7 +84,7 @@ impl Handler<SigninUser> for ConnDsl {
                         })
                     },
                     Err(_) => {
-                        Ok(SigninMsgs { 
+                        Ok(SigninMsgs {
                             status: 400,
                             token: "".to_owned(),
                             signin_user: no_user,
@@ -87,7 +94,7 @@ impl Handler<SigninUser> for ConnDsl {
                 }
             },
             None => {
-                Ok(SigninMsgs { 
+                Ok(SigninMsgs {
                     status: 400,
                     token: "".to_owned(),
                     signin_user: no_user,
@@ -112,10 +119,10 @@ impl Handler<UserInfo> for ConnDsl {
                             id: login_user.id,
                             email: login_user.email,
                             username: login_user.username,
-                            password: login_user.password,
+                            password: "".to_owned(),
                             created_at : login_user.created_at,
                     };
-                    Ok(UserInfoMsgs { 
+                    Ok(UserInfoMsgs {
                             status: 200,
                             message : "The  current_user info.".to_string(),
                             current_user: current_user,
@@ -129,7 +136,7 @@ impl Handler<UserInfo> for ConnDsl {
                             password: "".to_owned(),
                             created_at: Utc::now().naive_utc(),
                     };
-                    Ok(UserInfoMsgs { 
+                    Ok(UserInfoMsgs {
                             status: 400,
                             message : "error.".to_string(),
                             current_user: no_user,

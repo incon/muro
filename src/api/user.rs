@@ -12,7 +12,7 @@ pub fn user_info(req: HttpRequest<AppState>) -> FutureResponse<HttpResponse> {
             let user_id = token[7..].to_string();
             match verify_token(&user_id) {
                 Ok(user_id) => {
-                    req.state().db.send(UserInfo{user_id})         
+                    req.state().db.send(UserInfo{user_id})
                         .from_err()
                         .and_then(|res| {
                             match res {
@@ -24,7 +24,7 @@ pub fn user_info(req: HttpRequest<AppState>) -> FutureResponse<HttpResponse> {
                         }).responder()
                     },
                 Err(_) => {
-                    req.state().db.send(UserInfo{user_id: "".to_string()})         
+                    req.state().db.send(UserInfo{user_id: "".to_string()})
                         .from_err()
                         .and_then(|res| {
                             match res {
@@ -42,7 +42,7 @@ pub fn user_delete(req: HttpRequest<AppState>) -> FutureResponse<HttpResponse> {
             let user_id = token[7..].to_string();
             match verify_token(&user_id) {
                 Ok(user_id) => {
-                    req.state().db.send(UserDelete{user_id})         
+                    req.state().db.send(UserDelete{user_id})
                         .from_err()
                         .and_then(|res| {
                             match res {
@@ -54,7 +54,7 @@ pub fn user_delete(req: HttpRequest<AppState>) -> FutureResponse<HttpResponse> {
                         }).responder()
                     },
                 Err(_) => {
-                    req.state().db.send(UserDelete{user_id: "".to_string()})         
+                    req.state().db.send(UserDelete{user_id: "".to_string()})
                         .from_err()
                         .and_then(|res| {
                              match res {
@@ -67,12 +67,11 @@ pub fn user_delete(req: HttpRequest<AppState>) -> FutureResponse<HttpResponse> {
 }
 
 pub fn user_update(user_update: Json<UserUpdate>, state: State<AppState>) -> FutureResponse<HttpResponse> {
-        state.db.send(UserUpdate{ 
+        state.db.send(UserUpdate{
                 user_id: user_update.user_id,
                 newname: user_update.newname.clone(),
                 newmail: user_update.newmail.clone(),
                 newpassword: user_update.newpassword.clone(),
-                confirm_newpassword: user_update.confirm_newpassword.clone(),
             })         
             .from_err()
             .and_then(|res| {

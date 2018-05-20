@@ -28,7 +28,7 @@ pub struct SignupUser {
     pub username: String,
     pub email: String,
     pub password: String,
-    pub confirm_password: String,
+    //pub confirm_password: String,
 }
 #[derive(Deserialize,Serialize, Debug)]
 pub struct SigninUser {
@@ -47,7 +47,6 @@ pub struct UserUpdate {
     pub newname: String,
     pub newmail: String,
     pub newpassword: String,
-    pub confirm_newpassword: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

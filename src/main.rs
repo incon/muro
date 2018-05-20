@@ -59,13 +59,13 @@ fn main() {
             .max_age(3600)
             .resource("/user/signup", |r| { r.method(Method::POST).with2(signup); })
             .resource("/user/signin", |r| { r.method(Method::POST).with2(signin); })
-            .resource("/api/user_info", |r| { r.method(Method::GET).h(user_info); })
-            .resource("/api/user_delete", |r| { r.method(Method::GET).h(user_delete); })
+            .resource("/api/user_info", |r| { r.method(Method::POST).h(user_info); })
+            .resource("/api/user_delete", |r| { r.method(Method::POST).h(user_delete); })
             .resource("/api/user_update", |r| { r.method(Method::POST).with2(user_update); })
-            .resource("/api/theme_list", |r| { r.method(Method::GET).h(theme_list); })
+            .resource("/api/theme_list", |r| { r.method(Method::POST).h(theme_list); })
             .resource("/api/theme_new", |r| { r.method(Method::POST).with2(theme_new); })
             .resource("/api/{theme_id}", |r| {
-                r.method(Method::GET).h(theme_and_comments);
+                //r.method(Method::GET).h(theme_and_comments);
                 r.method(Method::POST).with2(theme_add_comment);
             })
             .register())
